@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 
@@ -9,7 +8,7 @@ def home(request):
 
 def signupuser(request):
 	if request.method == 'GET':
-		return render(request, 'signup.html', {'form': UserCreationForm()})
+		return render(request, 'signup.html')
 	if request.method == 'POST':
 		if request.POST.get('password1') == request.POST.get('password2'):
 			try:
