@@ -4,30 +4,27 @@
 	<div class="row">
 		<div class="col-sm-5">
 			<h5 class="fw-light py-3">Signup</h5>
+			<div class="alert alert-danger mb-4">{{ error }}</div>
 			<form method="POST">
 				{% csrf_token %}
-				<div class="mb-2">
-					<label for="exampleInputEmail1" class="form-label">Username</label>
-					<input type="text" class="form-control" id="exampleInputEmail1" name="username">
+				<div class="mb-4">
+					<input type="text" class="form-control" id="exampleInputEmail1" name="username" placeholder="Enter Username">
 				</div>
-				<div class="mb-2">
-					<label for="exampleInputEmail1" class="form-label">Email address</label>
-					<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
+				<div class="mb-4">
+					<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="Enter Email">
 				</div>
-				<div class="mb-2">
-					<label for="exampleInputPassword1" class="form-label">Password</label>
-					<input type="password" class="form-control" id="exampleInputPassword1" name="password1">
+				<div class="mb-4">
+					<input type="password" class="form-control" id="exampleInputPassword1" name="password1" placeholder="Enter Password">
 					<div id="passwordHelpBlock" class="form-text">
 						Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
 					</div>
 				</div>
-				<div class="mb-2">
-					<label for="exampleInputPassword1" class="form-label">Re-Enter Password</label>
-					<input type="password" class="form-control" id="exampleInputPassword1" name="password2">
+				<div class="mb-4">
+					<input type="password" class="form-control" id="exampleInputPassword1" name="password2" placeholder="Re-Enter Password">
 				</div>
 				<button type="submit" class="btn btn-primary">Sign Up</button>
 			</form>
 		</div>
 	</div>
 </div>
-{% endblock %}
+{% endblock 'content' %}

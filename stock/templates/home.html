@@ -1,26 +1,35 @@
 {% extends 'base.html' %}
 {% block 'content' %}
 
-<section class="py-5 container">
+<!-- <style type="text/css">
+	.vl {
+		border-left: 1px solid rgba(54, 162, 235, 1);
+		height:300px;
+	}
+</style> -->
+
+<div class="my-5 container">
 	<div class="row">
-		<div class="col-sm-8">col-sm-8</div>
-		<div class="col-sm-4">
-			<h4 class="fw-light"><b>Nifty50 Prediction</b></h4><br>
-			<h5 class="fw-light">Login</h5><br>
+		<div class="col-sm-9">
+			{% block 'chart' %}
+			{% endblock 'chart' %}
+		</div>
+		<div class="col-sm-3 mt-5 pl-5 vl">
+			<h4 class="fw-light text-center mb-5"><b>Nifty50 Prediction</b></h4>
+			<h5 class="fw-light mb-4">Login</h5>
+			{{ error }}
 			<form method="POST">
 				{% csrf_token %}
 				<div class="mb-3">
-					<label for="exampleInputEmail1" class="form-label">Username</label>
-					<input type="text" class="form-control" id="exampleInputEmail1" name="username">
+					<input type="text" class="form-control" id="exampleInputEmail1" name="username" placeholder="Username">
 				</div>
-				<div class="mb-3">
-					<label for="exampleInputPassword1" class="form-label">Password</label>
-					<input type="password" class="form-control" id="exampleInputPassword1" name="password">
+				<div class="mb-4">
+					<input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
 				</div>
 				<button type="submit" class="btn btn-primary">Login</button>
 			</form>
 		</div>
 	</div>
-</section>
+</div>
 
-{% endblock %}
+{% endblock 'content' %}
