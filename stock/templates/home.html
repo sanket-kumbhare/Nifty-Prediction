@@ -1,18 +1,10 @@
 {% extends 'base.html' %}
-{% block 'content' %}
-
-<!-- <style type="text/css">
-	.vl {
-		border-left: 1px solid rgba(54, 162, 235, 1);
-		height:300px;
-	}
-</style> -->
+{% block 'content' %}	
 
 <div class="my-5 container">
 	<div class="row">
 		<div class="col-sm-9">
-			{% block 'chart' %}
-			{% endblock 'chart' %}
+			<canvas id="myChart" width="600" height="300" data-url="{% url 'chart' %}"></canvas>
 		</div>
 		<div class="col-sm-3 mt-5 pl-5 vl">
 			<h4 class="fw-light text-center mb-5"><b>Nifty50 Prediction</b></h4>
@@ -31,5 +23,78 @@
 		</div>
 	</div>
 </div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: [
+					{% for i in labels %}
+					'{{ i }}',
+					{% endfor %}
+				],
+				datasets: [{
+					label: 'Nifty_50',
+					data: [
+						{% for i in data %}
+						'{{ i }}',
+						{% endfor %}
+					],
+					backgroundColor: [
+					'rgba(54, 162, 235, 0.2)',
+					],
+					borderColor: [
+					'rgba(54, 162, 235, 1)',
+					],
+					pointBackgroundColor: 'rgba(54, 162, 235, 0.2)',
+					pointBorderColor: 'rgba(54, 162, 235, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				legend: {
+					position: 'top',
+					align: 'end',
+					labels: {
+						fontColor: "#fff",
+						boxWidth: 0,
+					},
+				},
+				scales: {
+					yAxes: [{
+						gridLines: {
+							display: false,
+							//color: "#42647F",
+						},	
+						ticks: {
+							fontColor: '#fff',
+						}
+					}],
+					xAxes: [{
+						gridLines: {
+							display: false,
+							//color: "#42647F",
+						},
+						ticks: {
+							display: false,
+						}
+					}]
+				},
+				hoverBackgroundColor: 'rgba(54, 162, 235, 5)',
+			}
+		});
+	});
+
+</script>
+
 
 {% endblock 'content' %}
