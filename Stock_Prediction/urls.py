@@ -22,8 +22,8 @@ urlpatterns = [
 
     # Auth
     path('', views.home, name='home'),
-    path('chart/', views.chart, name='chart'),
     path('signup/', views.signupuser, name='signupuser'),
+    path('logout/', views.logoutuser, name='logoutuser'),
 
     # Main
     path('prediction/', views.prediction, name='prediction')

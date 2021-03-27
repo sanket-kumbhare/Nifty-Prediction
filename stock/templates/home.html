@@ -1,25 +1,28 @@
 {% extends 'base.html' %}
 {% block 'content' %}	
+<div class="jumbotron vertical-center bg-dark">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-8 mr-5 ">
+				<canvas id="myChart" width="600" height="300"></canvas>
+			</div>
+			<div class="col-sm-3 ml-3 rounded-lg shadow-lg">
+				<h2 class="fw-light text-center pt-4"><i class="fa fa-line-chart px-2" aria-hidden="true"></i></h2>
+				<h5 class="fw-light mb-4">Login</h5>
+				<p class="text-danger">{{ error }}</p>
+				<form method="POST">
+					{% csrf_token %}
+					<div class="mb-3">
+						<input type="text" class="form-control bg-dark text-white" id="exampleInputEmail1" name="username" placeholder="Username">
+					</div>
+					<div class="mb-4">
+						<input type="password" class="form-control bg-dark text-white" id="exampleInputPassword1" name="password" placeholder="Password">
+					</div>
+					<button type="submit" class="btn btn-primary btn-block rounded-lg shadow-sm col">Login</button>
+					<div class="text-center py-4"><a class="text-form py-4" href="{% url 'signupuser' %}">Create account for Predictions</a>	</div>
 
-<div class="my-5 container">
-	<div class="row">
-		<div class="col-sm-9">
-			<canvas id="myChart" width="600" height="300" data-url="{% url 'chart' %}"></canvas>
-		</div>
-		<div class="col-sm-3 mt-5 pl-5 vl">
-			<h4 class="fw-light text-center mb-5"><b>Nifty50 Prediction</b></h4>
-			<h5 class="fw-light mb-4">Login</h5>
-			{{ error }}
-			<form method="POST">
-				{% csrf_token %}
-				<div class="mb-3">
-					<input type="text" class="form-control" id="exampleInputEmail1" name="username" placeholder="Username">
-				</div>
-				<div class="mb-4">
-					<input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
-				</div>
-				<button type="submit" class="btn btn-primary">Login</button>
-			</form>
+				</form>
+			</div>
 		</div>
 	</div>
 </div>
@@ -34,29 +37,31 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		var ctx = document.getElementById('myChart').getContext('2d');
+		var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+		gradient.addColorStop(0, 'rgba(2, 117, 216, 0.3)');   
+		gradient.addColorStop(1, 'rgba(2, 117, 216, 0.02)');
+		gradient.addColorStop(1, 'rgba(2, 117, 216, 0.001)');
 		var myChart = new Chart(ctx, {
 			type: 'line',
 			data: {
 				labels: [
-					{% for i in labels %}
-					'{{ i }}',
-					{% endfor %}
+				{% for i in labels %}
+				'{{ i }}',
+				{% endfor %}
 				],
 				datasets: [{
-					label: 'Nifty_50',
+					label: 'Nifty_50 Current Closing Price',
 					data: [
-						{% for i in data %}
-						'{{ i }}',
-						{% endfor %}
+					{% for i in data %}
+					'{{ i }}',
+					{% endfor %}
 					],
-					backgroundColor: [
-					'rgba(54, 162, 235, 0.2)',
-					],
+					backgroundColor: gradient,
 					borderColor: [
-					'rgba(54, 162, 235, 1)',
+					'rgba(2, 117, 216, 1)',
 					],
-					pointBackgroundColor: 'rgba(54, 162, 235, 0.2)',
-					pointBorderColor: 'rgba(54, 162, 235, 1)',
+					pointBackgroundColor: 'rgba(2, 117, 216, 0.2)',
+					pointBorderColor: 'rgba(2, 117, 216, 1)',
 					borderWidth: 1
 				}]
 			},
@@ -72,8 +77,8 @@
 				scales: {
 					yAxes: [{
 						gridLines: {
-							display: false,
-							//color: "#42647F",
+							//display: false,
+							color: 'rgba(255, 255, 255, 0.2)',
 						},	
 						ticks: {
 							fontColor: '#fff',

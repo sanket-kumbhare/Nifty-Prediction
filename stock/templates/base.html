@@ -8,24 +8,62 @@
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
+		<!-- Fontawesome -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		<link rel="shortcut icon" href="" type="image/x-icon">
 
 		<title>Nifty50 Prediction</title>
 	</head>
 	<header>
 
 		<!-- Navigation Bar -->
+		{% if user.is_authenticated %}
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-5 shadow-lg">
-			<a class="navbar-brand" href="{% url 'home' %}">Nifty50 Prediction</a>
+			<a class="navbar-brand" href="{% url 'prediction' %}"><i class="fa fa-line-chart px-2" aria-hidden="true"></i>Nifty50 Prediction</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav ml-auto">
-					<a class="nav-item nav-link px-4 btn" href="#">News</a>
-					<a class="nav-item px-4 btn" href="{% url 'signupuser' %}" style="background-color: rgba(54, 162, 235, 1); color: white;">Register</a>
+					<a class="nav-item nav-link px-4 mx-2 btn" href="#">News</a>
+					<a class="nav-item nav-link px-4 mx-2 btn" href="#">About</a>
+					<form action="{% url 'logoutuser' %}" method="POST">
+						{% csrf_token %}
+						<button class="nav-item px-4 btn btn-primary btn-block rounded-ls" type="submit">{{ user.username|title }}</button>
+					</form>
 				</div>
 			</div>
 		</nav>
+		{% elif request.path == '/' %}
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-5 shadow-lg">
+			<a class="navbar-brand" href="{% url 'home' %}"><i class="fa fa-line-chart px-2" aria-hidden="true"></i>Nifty50 Prediction</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-nav ml-auto">
+					<a class="nav-item nav-link px-4 mx-2 btn" href="#">News</a>
+					<a class="nav-item nav-link px-4 mx-2 btn" href="#">About</a>
+					<a class="nav-item px-4 btn btn-primary btn-block rounded-lg" href="{% url 'signupuser' %}">Register</a>
+				</div>
+			</div>
+		</nav>
+		{% else %}
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-5 shadow-lg">
+			<a class="navbar-brand" href="{% url 'home' %}"><i class="fa fa-line-chart px-2" aria-hidden="true"></i>Nifty50 Prediction</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-nav ml-auto">
+					<a class="nav-item nav-link px-4 mx-2 btn" href="#">News</a>
+					<a class="nav-item nav-link px-4 mx-2 btn" href="#">About</a>
+					<a class="nav-item px-4 btn btn-primary btn-block rounded-lg" href="{% url 'home' %}">Login</a>
+				</div>
+			</div>
+		</nav>
+		{% endif %}
 
 	</header>
 	<body class="text-light bg-dark">
@@ -49,6 +87,12 @@
 
 		{% block 'script' %}
 		{% endblock 'script' %}
-</body>
+	</body>
+	<footer class="footer fixed-bottom">
+		<div class="text-light bg-dark text-center p-3 shadow-lg">
+    		© {% now 'Y' %} Copyright:
+    		<a class="text-white" href="#">nifty50prediction.com</a>
+  		</div>
+	</footer>
 </html>
 
