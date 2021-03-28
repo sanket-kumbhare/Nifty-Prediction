@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block 'content' %}
-<div class="jumbotron vertical-center bg-dark">
-	<div class="container">
+<div class="jumbotron bg-dark mt-5">
+	<div class="container ">
 		<div class="row">
-			<div class="col-sm-4 shadow-lg py-3 rounded-lg">
-				<h5 class="fw-light mb-4">Signup</h5>
-				<p class="text-danger">{{ error }}</p>
+			<div class="col-sm-4 shadow-lg py-3 rounded-lg mx-3">
+				<h5 class="fw-light mb-2">Signup</h5>
+				<p class="text-danger text-center">{{ error }}</p>
 				<form method="POST">
 					{% csrf_token %}
 					<div class="mb-4">
@@ -29,6 +29,26 @@
 						</div>
 					</div>
 				</form>
+			</div>
+			<div class="col-sm-7 shadow-lg py-3 rounded-lg mx-3">
+				<h5 class="fw-light mb-3">About Nifty50 Prediction</h5>
+				<ul>
+					<li>
+						Nifty50 Prediction is the act of trying to determine the future value of a Nifty50 companies stock or other financial instrument traded on a financial exchange.
+					</li>
+					<li>
+						We are using Stacked LSTM Model.
+					</li>
+					<li>
+						Just select the company name and click on Predict. You will get a graph of prediction for your selected company.
+					</li>
+					<li>
+						We does not provide financial advice or personal investment to individuals, or act as personal financial, legal, or instututional investment advisors, or individually advocate the purchase or sale of any security or investment or the use of any particular financial strategies.
+					</li>
+					<li>
+						Information is provided 'as-is' and solely for informational purposes and is not advice. We does not bear any responsibility for any losses or damage that may occur as a result of reliance on this data.
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block 'content' %}	
-<div class="jumbotron vertical-center bg-dark">
-	<div class="container">
+<div class="jumbotron bg-dark mt-4" id="main">
+	<div class="container my-5">
 		<div class="row">
 			<div class="col-sm-8 mr-5 ">
 				<canvas id="myChart" width="600" height="300"></canvas>
@@ -9,7 +9,7 @@
 			<div class="col-sm-3 ml-3 rounded-lg shadow-lg">
 				<h2 class="fw-light text-center pt-4"><i class="fa fa-line-chart px-2" aria-hidden="true"></i></h2>
 				<h5 class="fw-light mb-4">Login</h5>
-				<p class="text-danger">{{ error }}</p>
+				<p class="text-danger text-center">{{ error }}</p>
 				<form method="POST">
 					{% csrf_token %}
 					<div class="mb-3">
@@ -22,6 +22,27 @@
 					<div class="text-center py-4"><a class="text-form py-4" href="{% url 'signupuser' %}">Create account for Predictions</a>	</div>
 
 				</form>
+			</div>
+		</div>
+	</div>
+	<hr class="bg-secondary">
+	<h4 class="p-3 m-3 m-auto" id="news">Top Stories</h4>
+	<div class="album py-5 bg-dark">
+		<div class="container">
+			<div class="row">
+				{% for result in results %}
+				<a class="col-md-3" href="https://{{ result.link }}" style="text-decoration: none;">
+					<div class="card mb-4 box-shadow bg-dark shadow-lg rounded-lg" style="height:200px">
+						<!-- <img class="rounded-top" src="{{ result.img }}" alt="Card image cap"> -->
+						<div class="card-body">
+							<p class="card-text text-light">{{ result.title }}</p>
+							<div class="d-flex justify-content-between align-items-center">
+								<small class="text-secondary">{{ result.date }}</small>
+							</div>
+						</div>
+					</div>
+				</a>
+				{% endfor %}
 			</div>
 		</div>
 	</div>
