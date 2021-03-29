@@ -35,14 +35,15 @@ def home(request):
     }
 
     if request.POST.get('login'):
-        user = authenticate(request, request.POST.get(
-            'username'), request.POST.get('password'))
+        user = authenticate(
+            request, username=request.POST['username'], password=request.POST.get('password'))
 
         if user is not None:
             login(request, user)
             return redirect('home')
 
         else:
+            print(user)
             context['error'] = "*Username and Password doesn't Match.*"
             # context['results']=results
 
