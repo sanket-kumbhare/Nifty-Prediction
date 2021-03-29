@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
-{% block 'content' %}	
+{% block 'content' %}
+
 <div class="jumbotron bg-dark mt-4" id="main">
 	<div class="container my-5">
 		<div class="row">
 			<div class="col-sm-8 mr-5 ">
 				<canvas id="myChart" width="600" height="300"></canvas>
 			</div>
+			{% if not request.user.is_authenticated %}
 			<div class="col-sm-3 ml-3 rounded-lg shadow-lg">
 				<h2 class="fw-light text-center pt-4"><i class="fa fa-line-chart px-2" aria-hidden="true"></i></h2>
 				<h5 class="fw-light mb-4">Login</h5>
@@ -18,13 +20,65 @@
 					<div class="mb-4">
 						<input type="password" class="form-control bg-dark text-white" id="exampleInputPassword1" name="password" placeholder="Password">
 					</div>
-					<button type="submit" class="btn btn-primary btn-block rounded-lg shadow-sm col">Login</button>
+					<button type="submit" class="btn btn-primary btn-block rounded-lg shadow-sm col" name="login">Login</button>
 					<div class="text-center py-4"><a class="text-form py-4" href="{% url 'signupuser' %}">Create account for Predictions</a>	</div>
 
 				</form>
 			</div>
+			{% endif %}
 		</div>
 	</div>
+	<div class="container">
+		<div class="row  p-4">
+			<form action="" method="POST" class="input-group mb-3 col-8">
+				{% csrf_token %}
+			  
+				 
+				  <select class="custom-select" id="inputGroupSelect01" name="option">
+					<option>Choose Company</option>
+					{%  for company in companies %}
+					<option value={{company.id}}>{{company.name}}</option>
+					{% endfor %}
+					
+				  </select>
+				  <div class="input-group-append">
+					  {% if request.user.is_authenticated %}
+					  <button type="submit" class="btn  btn-outline-secondary input-group-button" name='submit'>Submit</button>
+					  {% else %}
+					  <a href="{% url 'signupuser' %}" class="btn  btn-outline-secondary input-group-button">Submit</a>
+						{% endif %}
+					</div>
+			   
+			  </form>
+		</div>
+		
+	</div>
+	<div class="col-md-6">
+           
+		<div class="container m-5 border-2 text-light ">
+		  {% if priceObj %}
+		<table class="table">
+		  <thead>
+			<tr>
+			  <th class="col text-light">Last Close at {{priceObj.end}}</th>
+			  <th class="col text-light">prediction for {{priceObj.tommorow|date:'Y-m-d'}} </th>
+			  
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr>
+			  <td class="text-light">{{priceObj.endPrice}}</th>
+			  
+			  <td class="text-light">{{priceObj.prediction}}</td>
+			 
+			</tr>
+		   
+		  </tbody>
+		</table>
+		{% endif %}
+		</div>
+		
+	  </div>
 	<hr class="bg-secondary">
 	<h4 class="p-3 m-3 m-auto" id="news">Top Stories</h4>
 	<div class="album py-5 bg-dark">

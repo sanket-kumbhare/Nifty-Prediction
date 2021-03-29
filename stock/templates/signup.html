@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block 'content' %}
+	
 <div class="jumbotron bg-dark mt-5">
 	<div class="container ">
+		{% for message in messages %}
+<div class="alert-danger">{{message}}</div>
+{% endfor %}
 		<div class="row">
 			<div class="col-sm-4 shadow-lg py-3 rounded-lg mx-3">
 				<h5 class="fw-light mb-2">Signup</h5>
