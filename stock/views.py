@@ -8,14 +8,14 @@ from stock.models import Companies
 from django.contrib import messages
 from lstm.RunModel import RunModel
 from datetime import date, timedelta
-from GoogleNews import GoogleNews
+# from GoogleNews import GoogleNews
 
 
 def home(request):
     # news data
-    googlenews = GoogleNews(lang='en', period='1d', encode='utf-8')
-    googlenews.get_news('Nifty stock market')
-    results = googlenews.result(sort=True)
+    # googlenews = GoogleNews(lang='en', period='1d', encode='utf-8')
+    # googlenews.get_news('Nifty stock market')
+    # results = googlenews.result(sort=True)
 
     # chart data
     companies = Companies.objects.all()
@@ -49,8 +49,6 @@ def home(request):
 
             return render(request, 'home.html', context=context)
 
-    print(request.POST)
-
     if request.POST.get('option'):
 
         pk = request.POST['option']
@@ -59,9 +57,12 @@ def home(request):
 
         print(company.symbol)
         obj = RunModel(company)
+
         priceObj = obj.getPrice()
-        #nextDays = obj.next30days()
+        nextDays = obj.getNext30Days()
         context['priceObj'] = priceObj
+        context['nextDays'] = nextDays
+        context['selectedOption'] = company.name
 
     return render(request, 'home.html', context=context)
 
