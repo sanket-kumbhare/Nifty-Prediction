@@ -8,14 +8,14 @@ from stock.models import Companies
 from django.contrib import messages
 from lstm.RunModel import RunModel
 from datetime import date, timedelta
-# from GoogleNews import GoogleNews
+from GoogleNews import GoogleNews
 
 
 def home(request):
-    # news data
-    # googlenews = GoogleNews(lang='en', period='1d', encode='utf-8')
-    # googlenews.get_news('Nifty stock market')
-    # results = googlenews.result(sort=True)
+    news data
+    googlenews = GoogleNews(lang='en', period='1d', encode='utf-8')
+    googlenews.get_news('Nifty stock market')
+    results = googlenews.result(sort=True)
 
     # chart data
     companies = Companies.objects.all()
