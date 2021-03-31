@@ -12,7 +12,7 @@ from GoogleNews import GoogleNews
 
 
 def home(request):
-    news data
+    #news data
     googlenews = GoogleNews(lang='en', period='1d', encode='utf-8')
     googlenews.get_news('Nifty stock market')
     results = googlenews.result(sort=True)
