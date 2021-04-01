@@ -57,6 +57,14 @@
            
 		<div class="container m-5 border-2 text-light ">
 		  {% if priceObj %}
+		  <div class="container alert-info ">
+			  <h5>Showing Prediction for :</h5>
+			  <h3>{{selectedOption}}</h3>
+		  </div>
+		  <h5 class="text-light">
+			  Prediction for next day
+		  </h5>
+		  <!--1 day table-->
 		<table class="table">
 		  <thead>
 			<tr>
@@ -76,9 +84,37 @@
 		  </tbody>
 		</table>
 		{% endif %}
-		</div>
 		
-	  </div>
+
+
+		<!--30 days table-->
+		{% if nextDays %}
+		<h5 class="text-light">Predcition for next 30 days</h5>
+		<table class="table text-light">
+			<thead>
+			  <tr>
+				<th scope="col">Day</th>
+				<th scope="col">Closing Price</th>
+				
+			  </tr>
+			</thead>
+			<tbody>
+				{% for price in nextDays %}
+			  <tr>
+				 
+				<th scope="row">{{forloop.counter}}</th>
+				<td>{{price}}</td>
+				
+			  </tr>
+			  {% endfor %}
+			  
+			
+			</tbody>
+		  </table>
+		  {% endif %}
+		
+		</div>
+		</div>
 	<hr class="bg-secondary">
 	<h4 class="p-3 m-3 m-auto" id="news">Top Stories</h4>
 	<div class="album py-5 bg-dark">
@@ -98,6 +134,7 @@
 				</a>
 				{% endfor %}
 			</div>
+			
 		</div>
 	</div>
 </div>

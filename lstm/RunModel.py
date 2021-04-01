@@ -6,6 +6,7 @@ import datetime as dt
 from tensorflow.keras import models
 from tensorflow.keras.models import model_from_json
 import os
+import math
 
 
 class RunModel:
@@ -33,6 +34,7 @@ class RunModel:
         end = list(map(int, end))
         return end
 
+    # getting data for selected company
     def __inputHandler(self):
 
         self.model = self.__loadModel()
@@ -70,6 +72,7 @@ class RunModel:
 
         return self.pred_price
 
+    # prediction for next 1 day
     def getPrice(self):
         price = self.__inputHandler()
         closePrice = self.data['Close'][-1]
@@ -82,23 +85,41 @@ class RunModel:
 
         return priceObj
 
-    def next30days(self):
-        from numpy import array
+    def __getTempInput(self):
+
+        df = self.data.filter(['Close'])
+        dataset = df.values
+        training_data_len = math.ceil(len(dataset)*.8)
+        scaled_data = self.scaler.fit_transform(dataset)
+
+        test_data = scaled_data[training_data_len-60:, :]
+
+        x_input = test_data[300:].reshape(1, -1)
+
+        temp_input = list(x_input)
+        temp_input = temp_input[0].tolist()
+        return temp_input
+
+    # prediction for next 30 days
+    def getNext30Days(self):
+
+        temp_input = self.__getTempInput()
 
         lst_output = []
-        n_steps = 259
+        n_steps = 265
+
         i = 0
         while(i < 30):
 
             if(len(temp_input) > 100):
                 # print(temp_input)
                 x_input = np.array(temp_input[1:])
-                print("{} day input {}".format(i, x_input))
+                #print("{} day input {}".format(i, x_input))
                 x_input = x_input.reshape(1, -1)
                 x_input = x_input.reshape((1, n_steps, 1))
                 # print(x_input)
                 yhat = self.model.predict(x_input, verbose=0)
-                print("{} day output {}".format(i, yhat))
+                #print("{} day output {}".format(i, yhat))
                 temp_input.extend(yhat[0].tolist())
                 temp_input = temp_input[1:]
                 # print(temp_input)
@@ -107,11 +128,11 @@ class RunModel:
             else:
                 x_input = x_input.reshape((1, n_steps, 1))
                 yhat = self.model.predict(x_input, verbose=0)
-                print(yhat[0])
+                # print(yhat[0])
                 temp_input.extend(yhat[0].tolist())
-                print(len(temp_input))
+                # print(len(temp_input))
                 lst_output.extend(yhat.tolist())
                 i = i+1
-        output = self.scaler.inverse_transform(lst_output)
-
-        return output
+        predictions = self.scaler.inverse_transform(lst_output)
+        predictions = list(np.concatenate(predictions).flat)
+        return predictions
