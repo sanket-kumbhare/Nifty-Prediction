@@ -13,9 +13,9 @@ from GoogleNews import GoogleNews
 
 def home(request):
     #news data
-    googlenews = GoogleNews(lang='en', period='1d', encode='utf-8')
-    googlenews.get_news('Nifty stock market')
-    results = googlenews.result(sort=True)
+    # googlenews = GoogleNews(lang='en', period='12h', encode='utf-8')
+    # googlenews.get_news('National Stock Exchange')
+    # news = googlenews.result(sort=True)
 
     # chart data
     companies = Companies.objects.all()
@@ -25,13 +25,13 @@ def home(request):
         end=date.today(),
         index=True,
     )
-
     labels = data._data.axes[1].tolist()
 
     context = {
         'companies': companies,
         'labels': labels,
-        'data': data['Close'].tolist()
+        'data': data['Close'].tolist(),
+        # 'news': news
     }
 
     if request.POST.get('login'):
@@ -58,11 +58,31 @@ def home(request):
         print(company.symbol)
         obj = RunModel(company)
 
+        current_data = get_history(
+            symbol=company.symbol,
+            start=date.today() - timedelta(days=30),
+            end=date.today(),
+        )
+
+        current_labels = current_data._data.axes[1].tolist()
+        nan_ = [float('nan') for i in range(len(current_labels)-1)]
+        nan_.append(current_data['Close'].tolist()[-1])
         priceObj = obj.getPrice()
         nextDays = obj.getNext30Days()
+
+        if current_data['Close'].tolist()[-1] > nextDays[-1]:
+            color = True
+        else:
+            color = False
+
         context['priceObj'] = priceObj
         context['nextDays'] = nextDays
+        context['nextDays_data'] = nan_ + nextDays
+        context['nextDays_labels'] = current_labels + list(range(1, 21))
         context['selectedOption'] = company.name
+        context['current_data'] =  current_data['Close'].tolist()
+        context['current_labels'] = current_labels
+        context['color'] = color
 
     return render(request, 'home.html', context=context)
 

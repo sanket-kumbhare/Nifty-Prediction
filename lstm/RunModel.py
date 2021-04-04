@@ -46,8 +46,8 @@ class RunModel:
         self.data = get_history(
             symbol=self.symbol,
             start=start,
-            end=dt.date(end[0], end[1], end[2]
-                        ))
+            end=dt.date.today() - dt.timedelta(days=1)
+        )
         print(self.data.tail())
         self.scaler = MinMaxScaler(feature_range=(0, 1))
         # Create new data frame
@@ -109,7 +109,7 @@ class RunModel:
         n_steps = 265
 
         i = 0
-        while(i < 30):
+        while(i < 22):
 
             if(len(temp_input) > 100):
                 # print(temp_input)

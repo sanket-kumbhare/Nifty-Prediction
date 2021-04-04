@@ -1,59 +1,95 @@
 {% extends 'base.html' %}
 {% block 'content' %}
 
-<div class="jumbotron bg-dark mt-4" id="main">
-	<div class="container my-5">
-		<div class="row">
-			<div class="col-sm-8 mr-5 ">
+<div class="jumbotron bg-dark" id="main">
+	<div class="container my-5">	
+		{% if user.is_authenticated %}
+		<div class="row" style="min-height: 70vh;">
+			<div class="col-sm-8 mr-0">
 				<canvas id="myChart" width="600" height="300"></canvas>
-			</div>
-			{% if not request.user.is_authenticated %}
-			<div class="col-sm-3 ml-3 rounded-lg shadow-lg">
-				<h2 class="fw-light text-center pt-4"><i class="fa fa-line-chart px-2" aria-hidden="true"></i></h2>
-				<h5 class="fw-light mb-4">Login</h5>
-				<p class="text-danger text-center">{{ error }}</p>
-				<form method="POST">
+				<form action="" method="POST"class="input-group mt-5">
 					{% csrf_token %}
-					<div class="mb-3">
-						<input type="text" class="form-control bg-dark text-white" id="exampleInputEmail1" name="username" placeholder="Username">
+					<select class="custom-select rounded-left bg-dark text-muted border-primary" id="inputGroupSelect01" name="option">
+						<option value="  ">Choose Company</option>
+						{%  for company in companies %}
+						<option value="{{company.id}}">{{company.name}}</option>
+						{% endfor %}
+					</select>
+					<div class="input-group-append">
+						<button type="submit" class="btn btn-primary" name='submit'>Submit</button>
 					</div>
-					<div class="mb-4">
-						<input type="password" class="form-control bg-dark text-white" id="exampleInputPassword1" name="password" placeholder="Password">
-					</div>
-					<input type="submit" class="btn btn-primary btn-block rounded-lg shadow-sm col" name="login" value="login">
-					<div class="text-center py-4"><a class="text-form py-4" href="{% url 'signupuser' %}">Create account for Predictions</a>	</div>
-
 				</form>
+			</div>
+			<div class="col-sm-4 ml-0">
+				
+<!-- 1 day table
++  
+{% if priceObj %}
+		  <p class="text-light">
+			  Prediction for next day
+		  </p>
+			  <p class="text-light">Last Close at {{priceObj.end}}: {{priceObj.endPrice}}</p>
+			  <p class="text-light">prediction for {{priceObj.tommorow|date:'Y-m-d'}}:{{priceObj.prediction}} </p>
+			  {% endif %} -->
+
+			  	<!-- 30 days table -->
+				{% if nextDays %}
+				<h5 class="text-light m-3">Predcition for next 30 days</h5>
+				<div class=" overflow-auto" style=" height: calc(70vh - 70px);">
+				  	<table class="table table-striped table-dark table-sm parent">
+				  		<thead class="bg-dark" style="position: sticky; position: -webkit-sticky; top: 0">
+				  			<tr>
+				  				<th scope="col" class="text-center">Day</th>
+				  				<th scope="col" class="text-center">Closing Price</th>
+				  			</tr>
+				  		</thead>
+				  		<tbody>
+				  			{% for price in nextDays %}
+				  			<tr class="text-center">
+				  				<th scope="row">{{forloop.counter}}</th>
+				  				<td>{{ price|floatformat:2 }}</td>
+				  			</tr>
+				  			{% endfor %}
+				  		</tbody>
+				  	</table>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+			{% else %}
+			<div class="row">
+				<div class="col-sm-8 mr-5">
+					<canvas id="myChart" width="600" height="300"></canvas>
+				</div>
+				<div class="col-sm-3 ml-3 rounded-lg shadow-lg">
+					<h2 class="fw-light text-center pt-4"><i class="fa fa-line-chart px-2" aria-hidden="true"></i></h2>
+					<h5 class="fw-light mb-4">Login</h5>
+					<p class="text-danger text-center">{{ error }}</p>
+					<form method="POST">
+						{% csrf_token %}
+						<div class="mb-3">
+							<input type="text" class="form-control bg-dark text-white" id="exampleInputEmail1" name="username" placeholder="Username">
+						</div>
+						<div class="mb-4">
+							<input type="password" class="form-control bg-dark text-white" id="exampleInputPassword1" name="password" placeholder="Password">
+						</div>
+						<input type="submit" class="btn btn-primary btn-block rounded-lg shadow-sm col" name="login" value="Login">
+						<div class="text-center py-4">
+							<a class="text-form py-4" href="{% url 'signupuser' %}">Create account for Predictions</a>	
+						</div>
+					</form>
+				</div>
 			</div>
 			{% endif %}
 		</div>
-	</div>
-	<div class="container">
-		<div class="row  p-4">
-			<form action="" method="POST" class="input-group mb-3 col-8">
-				{% csrf_token %}
-			  
-				 
-				  <select class="custom-select" id="inputGroupSelect01" name="option">
-					<option>Choose Company</option>
-					{%  for company in companies %}
-					<option value={{company.id}}>{{company.name}}</option>
-					{% endfor %}
-					
-				  </select>
-				  <div class="input-group-append">
-					  {% if request.user.is_authenticated %}
-					  <button type="submit" class="btn  btn-outline-secondary input-group-button" name='submit'>Submit</button>
-					  {% else %}
-					  <a href="{% url 'signupuser' %}" class="btn  btn-outline-secondary input-group-button">Submit</a>
-						{% endif %}
-					</div>
-			   
-			  </form>
+		{% if not user.is_authenticated %}
+		<div class="alert bg-dark text-light font-italic text-center mx-5" role="alert">
+			Please login or register for making predictions.
 		</div>
-		
-	</div>
-	<div class="col-md-6">
+		{% endif %}
+
+
+	<!-- <div class="col-md-6">
            
 		<div class="container m-5 border-2 text-light ">
 		  {% if priceObj %}
@@ -64,7 +100,7 @@
 		  <h5 class="text-light">
 			  Prediction for next day
 		  </h5>
-		  <!--1 day table-->
+		 1 day table
 		<table class="table">
 		  <thead>
 			<tr>
@@ -86,41 +122,15 @@
 		{% endif %}
 		
 
+ -->
 
-		<!--30 days table-->
-		{% if nextDays %}
-		<h5 class="text-light">Predcition for next 30 days</h5>
-		<table class="table text-light">
-			<thead>
-			  <tr>
-				<th scope="col">Day</th>
-				<th scope="col">Closing Price</th>
-				
-			  </tr>
-			</thead>
-			<tbody>
-				{% for price in nextDays %}
-			  <tr>
-				 
-				<th scope="row">{{forloop.counter}}</th>
-				<td>{{price}}</td>
-				
-			  </tr>
-			  {% endfor %}
-			  
-			
-			</tbody>
-		  </table>
-		  {% endif %}
-		
-		</div>
-		</div>
+	<!-- News Section -->
 	<hr class="bg-secondary">
 	<h4 class="p-3 m-3 m-auto" id="news">Top Stories</h4>
 	<div class="album py-5 bg-dark">
 		<div class="container">
 			<div class="row">
-				{% for result in results %}
+				{% for result in news %}
 				<a class="col-md-3" href="https://{{ result.link }}" style="text-decoration: none;">
 					<div class="card mb-4 box-shadow bg-dark shadow-lg rounded-lg" style="height:200px">
 						<!-- <img class="rounded-top" src="{{ result.img }}" alt="Card image cap"> -->
@@ -139,52 +149,101 @@
 	</div>
 </div>
 
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
 		var ctx = document.getElementById('myChart').getContext('2d');
-		var gradient = ctx.createLinearGradient(0, 0, 0, 400);
-		gradient.addColorStop(0, 'rgba(2, 117, 216, 0.3)');   
-		gradient.addColorStop(1, 'rgba(2, 117, 216, 0.02)');
-		gradient.addColorStop(1, 'rgba(2, 117, 216, 0.001)');
+		var gradient_primary = ctx.createLinearGradient(0, 0, 0, 400);
+		gradient_primary.addColorStop(0, 'rgba(2, 117, 216, 0.3)');   
+		gradient_primary.addColorStop(1, 'rgba(2, 117, 216, 0.001)');
+		var gradient_danger = ctx.createLinearGradient(0, 0, 0, 400);
+		gradient_danger.addColorStop(0, 'rgba(217, 83, 79, 0.3)');   
+		gradient_danger.addColorStop(1, 'rgba(217, 83, 79, 0.001)');
+		var gradient_success = ctx.createLinearGradient(0, 0, 0, 400);
+		gradient_success.addColorStop(0, 'rgba(92, 184, 92, 0.3)');   
+		gradient_success.addColorStop(1, 'rgba(92, 184, 92, 0.001)');
 		var myChart = new Chart(ctx, {
 			type: 'line',
 			data: {
-				labels: [
-				{% for i in labels %}
-				'{{ i }}',
-				{% endfor %}
-				],
+				{% if nextDays %}
+				labels: [{% for i in nextDays_labels %}'{{ i }}',{% endfor %}],
 				datasets: [{
-					label: 'Nifty_50 Current Closing Price',
+					label: 
+					'Past Closing Price',
 					data: [
-					{% for i in data %}
+					{% for i in current_data %}
 					'{{ i }}',
 					{% endfor %}
 					],
-					backgroundColor: gradient,
+					backgroundColor: gradient_primary,
 					borderColor: [
-					'rgba(2, 117, 216, 1)',
+					'rgba(54, 162, 235, 1)',
+					],
+					pointBackgroundColor: 'rgba(54, 162, 235, 0.2)',
+					pointBorderColor: 'rgba(54, 162, 235, 1)',
+					borderWidth: 1
+				},
+				{
+					label: 
+					'Predicted Closing Price',
+					data: [{% for i in nextDays_data %}'{{ i|floatformat:2 }}',{% endfor %}],
+					{% if color  %}
+					backgroundColor: gradient_danger,
+					borderColor: [
+					'rgba(255, 99, 132, 1)',
+					],
+					pointBackgroundColor: 'rgba(255, 99, 132, 0.2)',
+					pointBorderColor: 'rgba(255, 99, 132, 1)',
+					{% else %}
+					backgroundColor: gradient_success,
+					borderColor: [
+					'rgba(92, 184, 92, 1)',
+					],
+					pointBackgroundColor: 'rgba(92, 184, 92, 0.2)',
+					pointBorderColor: 'rgba(92, 184, 92, 1)',
+					{% endif %}
+					borderWidth: 1
+				}],
+				{% else %}
+				labels: [{% for i in labels %}'{{ i }}',{% endfor %}],
+				datasets: [{
+					label: 
+					'Current Nifty Closing Price',
+					data: [
+					{% for i in data %}
+					'{{ i|floatformat:2 }}',
+					{% endfor %}
+					],
+					backgroundColor: gradient_primary,
+					borderColor: [
+					'rgba(54, 162, 235, 1)',
 					],
 					pointBackgroundColor: 'rgba(2, 117, 216, 0.2)',
 					pointBorderColor: 'rgba(2, 117, 216, 1)',
 					borderWidth: 1
-				}]
+				}],
+				{% endif %}
+					
 			},
 			options: {
 				legend: {
 					position: 'top',
 					align: 'end',
 					labels: {
-						fontColor: "#fff",
-						boxWidth: 0,
+					fontColor: '#fff',
+						
 					},
+				},
+				title: {
+					display: true,
+					text: '{{ selectedOption }}',
+					fontColor: '#fff'
 				},
 				scales: {
 					yAxes: [{
@@ -210,7 +269,6 @@
 			}
 		});
 	});
-
 </script>
 
 
