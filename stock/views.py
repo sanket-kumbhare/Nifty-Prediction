@@ -13,9 +13,13 @@ from GoogleNews import GoogleNews
 
 def home(request):
     #news data
-    # googlenews = GoogleNews(lang='en', period='12h', encode='utf-8')
-    # googlenews.get_news('National Stock Exchange')
-    # news = googlenews.result(sort=True)
+    googlenews = GoogleNews(lang='en', period='12h', encode='utf-8')
+    googlenews.get_news('National Stock Exchange')
+    news = googlenews.result(sort=True)
+    news_first = news[:8]
+    news_length = []
+    for i in range(1, len(news)//8):
+        news_length.append(news[i*8:(i*8)+8])
 
     # chart data
     companies = Companies.objects.all()
@@ -31,7 +35,8 @@ def home(request):
         'companies': companies,
         'labels': labels,
         'data': data['Close'].tolist(),
-        # 'news': news
+        'news': news,
+        'news_length': news_length,
     }
 
     if request.POST.get('login'):
