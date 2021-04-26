@@ -10,7 +10,6 @@ from lstm.RunModel import RunModel
 from datetime import date, timedelta
 from GoogleNews import GoogleNews
 
-
 def home(request):
     #news data
     googlenews = GoogleNews(lang='en', period='12h', encode='utf-8')

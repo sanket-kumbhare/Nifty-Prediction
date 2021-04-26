@@ -94,9 +94,9 @@ class RunModel:
 
         test_data = scaled_data[training_data_len-60:, :]
 
-        x_input = test_data[300:].reshape(1, -1)
+        self.x_input = test_data[300:].reshape(1, -1)
 
-        temp_input = list(x_input)
+        temp_input = list(self.x_input)
         temp_input = temp_input[0].tolist()
         return temp_input
 
@@ -106,7 +106,7 @@ class RunModel:
         temp_input = self.__getTempInput()
 
         lst_output = []
-        n_steps = 266
+        n_steps = self.x_input.shape[1]-1
 
         i = 0
         while(i < 22):
