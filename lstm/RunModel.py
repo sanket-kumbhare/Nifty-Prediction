@@ -1,12 +1,7 @@
-import tensorflow as tf
 import numpy as np
 from nsepy import get_history
-from sklearn.preprocessing import MinMaxScaler
 import datetime as dt
-from tensorflow.keras import models
 from tensorflow.keras.models import model_from_json
-import os
-import math
 
 
 class RunModel:
@@ -15,10 +10,10 @@ class RunModel:
 
     def __loadModel(self):
         # wipro model
-        path = 'lstm/lstmModel.json'
-        weights = 'lstm/weights.h5'
-        print(weights)
-        print(path)
+        path = 'lstm/lstmModel_final.json'
+        weights = 'lstm/weights_final.h5'
+        # print(weights)
+        # print(path)
         json_file = open(path, 'r')
         loaded_model_json = json_file.read()
         json_file.close()
@@ -27,112 +22,61 @@ class RunModel:
         print("Loaded model from disk")
         return model
 
-    def __getEndDate(self, today):
-        end = str(today).split("-")
-        end[-1] = str(int(end[-1])-1)
-
-        end = list(map(int, end))
-        return end
-
     # getting data for selected company
     def __inputHandler(self):
 
         self.model = self.__loadModel()
 
         start = dt.date(2011, 1, 17)
-
-        end = self.__getEndDate(dt.date.today())
-        print("getting data...")
-        self.data = get_history(
-            symbol=self.symbol,
-            start=start,
-            end=dt.date.today() - dt.timedelta(days=1)
-        )
-        print(self.data.tail())
-        self.scaler = MinMaxScaler(feature_range=(0, 1))
-        # Create new data frame
-        new_df = self.data.filter(['Close'])
-        # get the last 60 days closing price values and convert the dataframe to an array
-        last_60_days = new_df[-60:].values
-        # scaled the data to be values between 0 and 1
-        last_60_days_scaled = self.scaler.fit_transform(last_60_days)
-        # create an empty list
-        X_test = []
-        # append the past 60 days
-        X_test.append(last_60_days_scaled)
-        # convert the X_test data set to a numpy array
-        X_test = np.array(X_test)
-        # Reshape the data
-        X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
-        # get the predicted scaled price
-        pred_price = self.model.predict(X_test)
-        yhat = pred_price[0]
-        # undo the scalling
-        self.pred_price = self.scaler.inverse_transform(pred_price)
-
-        return self.pred_price
-
-    # prediction for next 1 day
-    def getPrice(self):
-        price = self.__inputHandler()
-        closePrice = self.data['Close'][-1]
-        priceObj = {
-            'end': self.data.index[-1],
-            'endPrice': closePrice,
-            'tommorow': dt.date.today(),
-            'prediction': price[0][0]
-        }
-
-        return priceObj
-
-    def __getTempInput(self):
-
-        df = self.data.filter(['Close'])
-        dataset = df.values
-        training_data_len = math.ceil(len(dataset)*.8)
-        scaled_data = self.scaler.fit_transform(dataset)
-
-        test_data = scaled_data[training_data_len-60:, :]
-
-        self.x_input = test_data[300:].reshape(1, -1)
-
-        temp_input = list(self.x_input)
-        temp_input = temp_input[0].tolist()
-        return temp_input
+        try:
+            #end = self.__getEndDate(dt.date.today())
+            print("getting data...")
+            self.data = get_history(
+                symbol=self.symbol,
+                start=start,
+                end=dt.date.today() - dt.timedelta(days=1)
+            )
+            print(self.data.tail())
+        except ConnectionError as e:
+            print(e)
 
     # prediction for next 30 days
+
     def getNext30Days(self):
-
-        temp_input = self.__getTempInput()
-
+        self.__inputHandler()
+        dataset = self.data
+        dataset = dataset['Close'].values
+        dataset = dataset[len(dataset)-30:]
+        n_features = 1
+        n_steps = 30
+        past_days = 30
+        # demonstrate prediction for next 10 days
+        x_input = np.array(dataset.tolist())
+        temp_input = list(x_input)
         lst_output = []
-        n_steps = self.x_input.shape[1]-1
-
         i = 0
-        while(i < 22):
+        while(i < 30):
 
-            if(len(temp_input) > 100):
-                # print(temp_input)
+            if(len(temp_input) > past_days):
                 x_input = np.array(temp_input[1:])
                 #print("{} day input {}".format(i, x_input))
-                x_input = x_input.reshape(1, -1)
-                x_input = x_input.reshape((1, n_steps, 1))
+                # print(x_input)
+                x_input = x_input.reshape((1, n_steps, n_features))
                 # print(x_input)
                 yhat = self.model.predict(x_input, verbose=0)
                 #print("{} day output {}".format(i, yhat))
-                temp_input.extend(yhat[0].tolist())
+                temp_input.append(yhat[0][0])
                 temp_input = temp_input[1:]
                 # print(temp_input)
-                lst_output.extend(yhat.tolist())
+                lst_output.append(yhat[0][0])
                 i = i+1
             else:
-                x_input = x_input.reshape((1, n_steps, 1))
+                x_input = x_input.reshape((1, n_steps, n_features))
                 yhat = self.model.predict(x_input, verbose=0)
                 # print(yhat[0])
-                temp_input.extend(yhat[0].tolist())
-                # print(len(temp_input))
-                lst_output.extend(yhat.tolist())
+                temp_input.append(yhat[0][0])
+                lst_output.append(yhat[0][0])
                 i = i+1
-        predictions = self.scaler.inverse_transform(lst_output)
-        predictions = list(np.concatenate(predictions).flat)
+        print(lst_output)
+        predictions = lst_output
         return predictions

@@ -10,8 +10,9 @@ from lstm.RunModel import RunModel
 from datetime import date, timedelta
 from GoogleNews import GoogleNews
 
+
 def home(request):
-    #news data
+    # news data
     googlenews = GoogleNews(lang='en', period='12h', encode='utf-8')
     googlenews.get_news('National Stock Exchange')
     news = googlenews.result(sort=True)
@@ -71,7 +72,7 @@ def home(request):
         current_labels = current_data._data.axes[1].tolist()
         nan_ = [float('nan') for i in range(len(current_labels)-1)]
         nan_.append(current_data['Close'].tolist()[-1])
-        priceObj = obj.getPrice()
+
         nextDays = obj.getNext30Days()
 
         if current_data['Close'].tolist()[-1] > nextDays[-1]:
@@ -79,12 +80,11 @@ def home(request):
         else:
             color = False
 
-        context['priceObj'] = priceObj
         context['nextDays'] = nextDays
         context['nextDays_data'] = nan_ + nextDays
         context['nextDays_labels'] = current_labels + list(range(1, 21))
         context['selectedOption'] = company.name
-        context['current_data'] =  current_data['Close'].tolist()
+        context['current_data'] = current_data['Close'].tolist()
         context['current_labels'] = current_labels
         context['color'] = color
 

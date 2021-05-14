@@ -5,57 +5,68 @@ from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
 import math
+from keras.callbacks import EarlyStopping
 import datetime as dt
 
 print("getting data")
-data = get_history(
+ds = get_history(
     symbol='WIPRO',
     start=dt.date(2011, 1, 17),
     end=dt.date.today()
 )
 
-data = data.filter(['Close'])
-dataset = data.values  # convert the data frame to a numpy array
-# number of rows to train the model on
-training_data_len = math.ceil(len(dataset)*.8)
 
-# scale the data
-scaler = MinMaxScaler(feature_range=(0, 1))
-scaled_data = scaler.fit_transform(dataset)
-scaled_data
+sc = MinMaxScaler()
+train_set = sc.fit_transform(ds['Close'][:2459].values.reshape(-1, 1))
 
 # create the training dataset
 # create the scaled training dataset
 
-train_data = scaled_data[0:training_data_len, :]
-# Split the data into x_train, y_train datasets
-x_train = []
-y_train = []
-for i in range(60, len(train_data)):
-    x_train.append(train_data[i-60:i, 0])
-    y_train.append(train_data[i, 0])
+past_days = 30
 
-x_train, y_train = np.array(x_train), np.array(y_train)
-# reshape the data
-x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
-x_train.shape
+
+def prepare_data(timeseries_data, n_features):
+    X, y = [], []
+    for i in range(len(timeseries_data)):
+        # find the end of this pattern
+        end_ix = i + n_features
+        # check if we are beyond the sequence
+        if end_ix > len(timeseries_data)-1:
+            break
+        # gather input and output parts of the pattern
+        seq_x, seq_y = timeseries_data[i:end_ix], timeseries_data[end_ix]
+        X.append(seq_x)
+        y.append(seq_y)
+    return np.array(X), np.array(y)
+
+
+# define input sequence
+timeseries_data = ds['Close'][:6100].tolist()
+# choose a number of time steps
+n_steps = past_days
+# split into samples
+X, y = prepare_data(timeseries_data, n_steps)
+
+n_features = 1
+X = X.reshape((X.shape[0], X.shape[1], n_features))
+
 
 # Build the LSTM model
 print("buliding model")
+callback = [EarlyStopping(monitor='loss', mode='auto',)]
 model = Sequential()
-model.add(LSTM(64, return_sequences=True, input_shape=(x_train.shape[1], 1)))
-model.add(LSTM(64, return_sequences=False))
-model.add(Dense(32))
+model.add(LSTM(64, activation='relu', return_sequences=True,
+               input_shape=(n_steps, n_features)))
+model.add(LSTM(64, activation='relu'))
 model.add(Dense(1))
-model.compile(optimizer='adam', loss='mean_squared_error')
-model.fit(x_train, y_train, batch_size=1, epochs=10)
-
-model.summary()
+model.compile(optimizer='adam', loss='mse',)
+# fit model
+model.fit(X, y, epochs=30, verbose=1)
 
 print("saving data...   ")
 model_json = model.to_json()
-with open("lstmModel.json", "w") as json_file:
+with open("lstmModel_final.json", "w") as json_file:
     json_file.write(model_json)
 # serialize weights to HDF5
-model.save_weights("weights.h5")
+model.save_weights("weights_final.h5")
 print("Saved model to disk")
