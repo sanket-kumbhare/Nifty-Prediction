@@ -132,9 +132,9 @@ Contains experiments with models
 Contains screenshots of the UI 
  Home/Login Page | Signup Page 
 :---:|:---:
- ![](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/login.png)  |  ![](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/signup.png) 
+ ![](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/login.gif)  |  ![](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/signup.png) 
  
  Prediction | News Section 
  :---:|:---:
- ![](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/prediction.png)  |  ![](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/news.png)  
+ ![](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/prediction.gif)  |  ![](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/news.gif)  
 ---
