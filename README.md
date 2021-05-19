@@ -30,17 +30,18 @@ Documents
 ```
 ### 2. Nifty-50-Prediction Folder
 Contains following Django Project files and folders.
-  - #### Stock_Prediction
-  > The Django project holds some configurations that apply to the project as a whole, such as project settings, URLs, shared templates and static files. Each application can have its own database and has its own functions to control how the data is displayed to the user in HTML templates.
+  - #### [Stock_Prediction](https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/Nifty-50-Prediction/Stock_Prediction)
+  > The Django project holds some configurations that apply to the project as a whole, such as project settings, URLs, shared templates and static files. Each application can have its own database and has its own functions to control how the data is displayed to the user in HTML templates.\
+  > Stock_Prediction Directory
  ```
- Stock_Prediction Directory
+ Stock_Prediction
  |   __init__.py
  |   asgi.py
  |   settings.py
  |   urls.py
  |   wsgi.py
  ```
-  - #### lstm
+  - #### [lstm](https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/Nifty-50-Prediction/lstm)
   > It is special kind of recurrent neural network that is capable of learning long term dependencies in data. This is achieved because the recurring module of the model has a combination of four layers interacting with each other.\
   > lstm Directory
  ```
@@ -96,7 +97,7 @@ def getNext30Days(self):
         predictions = lst_output
         return predictions
 ```
-  - #### stock
+  - #### [stock](https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/Nifty-50-Prediction/stock)
   > A Django application is a Python package that is specifically intended for use in a Django project. An application may use common Django conventions, such as having models , tests , urls , and views submodules.\
   > stock Directory
 ```
@@ -137,4 +138,16 @@ Contains screenshots of the UI
  Prediction | News Section 
  :---:|:---:
  ![](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/prediction.gif)  |  ![](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/news.gif)  
+---
+## Required Libraries
+- `django` Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design.
+- `nsepy` NSEpy is a library to extract historical and realtime data from NSE’s website.
+- `sklearn` Simple and efficient tools for predictive data analysis
+- `tenserflow` TensorFlow is an end-to-end open source platform for machine learning.
+- `keras` Keras is a deep learning API written in Python, running on top of the machine learning platform TensorFlow.
+- `datetime` The datetime module supplies classes for manipulating dates and times.
+---
+## Contributors
+| [<img src="https://avatars.githubusercontent.com/u/58529304?v=4" width="100px;"/><br /><sub><b>Sanket-Kumbhare</b></sub>](https://github.com/Sanket-Kumbhare) | [<img src="https://avatars.githubusercontent.com/u/31096252?v=4" width="100px;"/><br /><sub><b>swankhede</b></sub>](https://github.com/swankhede) | [<img src="https://avatars.githubusercontent.com/u/80164927?v=4" width="100px;"/><br /><sub><b>nihalbhopatrao</b></sub>](https://github.com/nihalbhopatrao) | [<img src="https://avatars.githubusercontent.com/u/83209588?v=4" width="100px;"/><br /><sub><b>kgce-git</b></sub>](https://github.com/kgce-git) | 
+:---: | :---: | :---: |:---:
 ---
