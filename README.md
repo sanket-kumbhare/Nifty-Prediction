@@ -125,14 +125,14 @@ stock
 |   tests.py
 |   views.py
 ```
-  - #### (db.sqlite3)[https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/Nifty-50-Prediction/db.sqlite]
+  - #### [db.sqlite3](https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/Nifty-50-Prediction/db.sqlite)
   > SQLite3 is a software library that provides a relational database management system. The lite in SQLite means lightweight in terms of setup, database administration, and required resources. SQLite has the following noticeable features: self-contained, serverless, zero-configuration, transactional.\
   > We are using sqlite3 for manageing User Authentication
 <img src="https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/myapp_models.png" width="800px;"/>
 
-  - #### [manage.py]([https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/Nifty-50-Prediction/manage.py)
+  - #### [manage.py](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Nifty-50-Prediction/manage.py)
   > A command-line utility that lets you interact with this Django project in various ways. You can read all the details about manage.py in django-admin and manage.py. The inner mysite/ directory is the actual Python package for your project.
-  - #### nifty50Companies.csv
+  - #### [nifty50Companies.csv](https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Nifty-50-Prediction/nifty50Companies.csv)
   > Csv file containing the list of nifty 50 companies with their respective symbol
 ### 3. [models Folder](https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/models)
 Contains experiments with models 
