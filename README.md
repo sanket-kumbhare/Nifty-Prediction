@@ -16,20 +16,30 @@ Nifty-Prediction
 └───models
 └───Screenshots
 ```
-### 1. Documents Folder
+### 1. [Documents Folder](https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/Documents)
 Contains Reports, PPT and Project diaries of 7<sup>th</sup> and 8<sup>th</sup> semester.
 > Documents Directory
 ```
 Documents
-|
-|
-|
-|
-|
-|
+|   7th sem project diary smpp.pdf
+|   PPT Sem8 Stock Market Prediction.pdf
+|   Project Report Stock Market Prediction.pdf
+|   Sem 8 Project Diary.pdf
+|   Sem8 report stock Price Prediction.pdf
+|   Stock Market Prediction PPT-converted.pptx 
 ```
-### 2. Nifty-50-Prediction Folder
+### 2. [Nifty-50-Prediction Folder](https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/Nifty-50-Prediction)
 Contains following Django Project files and folders.
+> Nifty-50-Prediction Directory
+```
+Nifty-50-Prediction
+└───Stock_Prediction
+└───lstm
+└───stock
+|   db.sqlite3
+|   manage.py
+|   nifty50Companies.csv 
+```
   - #### [Stock_Prediction](https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/Nifty-50-Prediction/Stock_Prediction)
   > The Django project holds some configurations that apply to the project as a whole, such as project settings, URLs, shared templates and static files. Each application can have its own database and has its own functions to control how the data is displayed to the user in HTML templates.\
   > Stock_Prediction Directory
@@ -115,16 +125,16 @@ stock
 |   tests.py
 |   views.py
 ```
-  - #### db.sqlite3
+  - #### (db.sqlite3)[https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/Nifty-50-Prediction/db.sqlite]
   > SQLite3 is a software library that provides a relational database management system. The lite in SQLite means lightweight in terms of setup, database administration, and required resources. SQLite has the following noticeable features: self-contained, serverless, zero-configuration, transactional.\
   > We are using sqlite3 for manageing User Authentication
 <img src="https://github.com/Sanket-Kumbhare/Nifty-Prediction/blob/master/Screenshots/myapp_models.png" width="800px;"/>
 
-  - #### manage.py
+  - #### [manage.py]([https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/Nifty-50-Prediction/manage.py)
   > A command-line utility that lets you interact with this Django project in various ways. You can read all the details about manage.py in django-admin and manage.py. The inner mysite/ directory is the actual Python package for your project.
   - #### nifty50Companies.csv
   > Csv file containing the list of nifty 50 companies with their respective symbol
-### 3. models Folder
+### 3. [models Folder](https://github.com/Sanket-Kumbhare/Nifty-Prediction/tree/master/models)
 Contains experiments with models 
   > models Directory
   ```
